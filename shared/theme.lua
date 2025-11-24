@@ -3,23 +3,24 @@
 -- '#rrggbb', '#rrggbbaa' or 'rgba(r,g,b,a)'.
 
 Theme = {
-    -- main card and text
-    card_bg = '#0f2a2f80',        -- background of the card
-    title_bg = '#0b1a1bcc',       -- header/background behind tag/title
-    text = '#e6eef0',            -- primary text
-    muted = '#9fb1b4',           -- muted text
+    -- main card and text (dark translucent cards like the screenshot)
+    card_bg = 'rgba(6,8,10,0.78)', -- main card background (dark, semi-transparent)
+    title_bg = 'rgba(0,0,0,0.55)', -- header/title strip behind tag
+    text = '#F4F7F8',              -- primary text (soft white)
+    muted = '#AAB7B9',             -- muted/secondary text
 
-    -- tag / code / progress defaults
-    tag_bg = '#1abc9ccc',
-    tag_fg = '#0b1a1b',
-    code_bg = '#2d9cffff',
-    code_fg = '#0b1a1b',
-    progress_bg = 'rgba(255,255,255,0.06)',
-    progress_color = '#2d9cff',
+    -- accent / tag / code / progress defaults (greens inspired by image)
+    tag_bg = 'rgba(34,197,94,0.14)', -- subtle green tag background
+    tag_fg = '#042712',              -- dark green text on tags
+    code_bg = 'rgba(255,255,255,0.03)',
+    code_fg = '#E6F0EF',
+    progress_bg = 'rgba(255,255,255,0.04)',
+    progress_color = '#16A34A',      -- bright green progress
+    accent = '#22C55E',              -- general accent (icons, highlights)
 
     -- sizing
-    card_width = '380px',
-    card_gap = '10px',
+    card_width = '360px',
+    card_gap = '12px',
 }
 
 return Theme

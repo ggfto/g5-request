@@ -42,7 +42,8 @@ export type ThemeInput = { [k: string]: unknown };
 export function sanitizeTheme(inTheme: ThemeInput) {
   if (!inTheme || typeof inTheme !== 'object') return {};
   const allowed = [
-    'card_bg','title_bg','text','muted','tag_bg','tag_fg','code_bg','code_fg','progress_bg','progress_color','card_width','card_gap'
+    'card_bg','title_bg','text','muted','tag_bg','tag_fg','code_bg','code_fg','progress_bg','progress_color','card_width','card_gap',
+    'bg_image','bg_size','bg_position'
   ];
   const out: Record<string, string> = {};
   for (const k of allowed) {
@@ -50,6 +51,10 @@ export function sanitizeTheme(inTheme: ThemeInput) {
     if (k === 'card_width' || k === 'card_gap') {
       const sv = normalizeSize(v);
       if (sv) out[k] = sv;
+    } else if (k === 'bg_image') {
+      if (typeof v === 'string' && v.trim()) out[k] = v.trim();
+    } else if (k === 'bg_size' || k === 'bg_position') {
+      if (typeof v === 'string' && v.trim()) out[k] = v.trim();
     } else {
       const cv = normalizeColor(v);
       if (cv) out[k] = cv;

@@ -46,12 +46,21 @@ const RequestContainer: React.FC = () => {
               muted: '--muted',
               progress_bg: '--progress-bg',
               progress_color: '--progress-color',
+              bg_image: '--bg-image',
+              bg_size: '--bg-size',
+              bg_position: '--bg-position',
               card_width: '--card-width',
               card_gap: '--card-gap',
             };
             for (const [k, v] of Object.entries(map)) {
               if ((cleaned as any)[k] !== undefined && document && document.documentElement) {
-                document.documentElement.style.setProperty(v, String((cleaned as any)[k]));
+                if (k === 'bg_image') {
+                  const url = String((cleaned as any)[k]);
+                  const cssVal = url ? `url('${url.replace(/'/g, "\\'")}')` : 'none';
+                  document.documentElement.style.setProperty(v, cssVal);
+                } else {
+                  document.documentElement.style.setProperty(v, String((cleaned as any)[k]));
+                }
               }
             }
           } catch (e) {

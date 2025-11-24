@@ -11,6 +11,7 @@ const DevPanel: React.FC = () => {
   const [id, setId] = useState(1);
   const [position, setPosition] = useState<"top-right" | "top-left">("top-right");
   const [themeInput, setThemeInput] = useState<string>(JSON.stringify({ card_bg: 'rgba(0,0,0,0.8)', progress_color: '#22c55e' }, null, 2));
+  const [bgUrl, setBgUrl] = useState<string>('');
 
   if (!isEnvBrowser()) return null;
 
@@ -138,10 +139,18 @@ const DevPanel: React.FC = () => {
         </div>
 
         <div style={{ marginTop: 8 }}>
-          <textarea value={themeInput} onChange={(e) => setThemeInput(e.target.value)} style={{ width: '100%', height: 120, fontFamily: 'monospace', fontSize: 12, marginTop: 6 }} />
+          <label style={{ fontSize: 12, color: '#9aa4ad' }}>Background Image URL</label>
+          <input style={{ ...inputStyle, marginTop: 6 }} value={bgUrl} onChange={(e) => setBgUrl(e.target.value)} placeholder="https://... or /local/path.jpg" />
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <textarea value={themeInput} onChange={(e) => setThemeInput(e.target.value)} style={{ width: '100%', height: 96, fontFamily: 'monospace', fontSize: 12, marginTop: 6 }} />
         </div>
         <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
           <button style={{ ...btnStyle, background: '#3b82f6', color: '#fff', flex: 1 }} onClick={applyTheme}>Apply Theme</button>
+          <button style={{ ...btnStyle, background: '#059669', color: '#fff', flex: 1 }} onClick={() => {
+            const cleaned = sanitizeTheme({ bg_image: bgUrl } as any);
+            sendMessage({ action: 'init', theme: cleaned });
+          }}>Apply Background</button>
           <button style={{ ...btnStyle, background: '#334155', color: '#fff', flex: 1 }} onClick={() => sendMessage({ action: 'init', theme: JSON.parse(themeInput) })}>Raw Init</button>
         </div>
       </div>

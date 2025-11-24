@@ -17,9 +17,26 @@ code { font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', mon
   --progress-color: #2d9cff;
   --card-width: 380px;
   --card-gap: 10px;
+  --bg-image: none;
+  --bg-size: cover;
+  --bg-position: center;
 }
 
 #g5-request-root { pointer-events: none; }
+
+/* full-screen background image for testing transparency */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: var(--bg-image);
+  background-size: var(--bg-size);
+  background-position: var(--bg-position);
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+}
 
 /* allow the dev panel to be interactive even though the root disables pointer events */
 .dev-panel { pointer-events: auto; }
