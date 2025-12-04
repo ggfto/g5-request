@@ -29,8 +29,8 @@ npm install -D tailwindcss postcss autoprefixer
 npm run start
 ```
 
-Observações:
-- Copie os assets (sons, imagens) para `web/public/assets` para que o dev server consiga servir os sons usados pelo painel. Por exemplo:
+Observações (dev):
+- Para o dev server servir os sons usados pela NUI, copie os assets para `web/public/assets` (ou crie um link/robocopy). Exemplo:
 
 ```powershell
 # do diretório raíz do repo
@@ -39,6 +39,33 @@ robocopy html\assets web\public\assets /E
 ```
 
 - O painel de testes (`DevPanel`) aparece automaticamente quando a aplicação detectar que está rodando num navegador (modo dev). Ele permite disparar mensagens que simulam os eventos NUI originais (`add`, `remove`, `flashAccept`, `flashDeny`, `prolong`, `init`).
+
+### Build & Deploy (automação raiz)
+
+Existe um script na raiz do repositório que compila a aplicação web e copia os artefatos para a pasta `html/` utilizada pelo recurso FiveM. Ele facilita o deploy sem precisar rodar manualmente comandos dentro de `web/`.
+
+- Para gerar a build e copiar para `html/` rode (na raiz do repo):
+
+```powershell
+cd G:\path\to\g5-request
+npm run build
+```
+
+- O que esse script faz:
+	- executa um instalador condicional em `web/` que roda `npm install` somente se `web/node_modules` estiver faltando ou vazio (`scripts/installIfMissing.js`).
+	- roda `npm run build` dentro de `web/` (Vite build) gerando a pasta `web/build/`.
+	- executa `scripts/copyBuild.js` que copia recursivamente `web/build/*` para `html/`.
+
+- Notas sobre o comportamento do copy:
+	- Antes de copiar, o script limpa `html/` recursivamente, **mas preserva qualquer pasta chamada** `sound` (em qualquer nível, ex: `html/sound` ou `html/assets/sound`). Isso evita sobrescrever/errar os arquivos de áudio que você colocará manualmente no servidor.
+	- Arquivos existentes em `html/` diferentes de `sound` serão removidos e substituídos pelos gerados em `web/build/`.
+
+- Saída de build padrão (exemplo): `web/build/index.html`, `web/build/assets/scripts.js`, `web/build/assets/styles.css`.
+	- Observação: a configuração atual gera nomes fixos para os bundles (para facilitar integração NUI), portanto lembre de limpar cache do cliente ou usar versionamento manual após deploy.
+
+- `postinstall` na raiz também chama o instalador condicional: ao rodar `npm install` na raiz, o script garante que `web` tenha suas dependências instaladas caso necessário.
+
+- Em CI, para instalações reprodutíveis, prefira usar `npm ci --prefix web`; posso alterar o comportamento do instalador condicional para usar `ci` se desejar.
 
 ## Tema / Customização (NUI)
 
